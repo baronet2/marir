@@ -23,6 +23,7 @@ import json
 entailment_probabilities = []
 
 for i, (name, group) in enumerate(recipe_mpr_clean.groupby('query')):
+  # Hugging face doesn't work with labels that contain commas
   query = group['query'].iloc[0].replace(",", "")
   probabilities = classifier(list(group['option_text'].values), query, multi_label=True)
   entailment_probabilities.extend(probabilities)
