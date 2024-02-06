@@ -28,8 +28,8 @@ for i, (name, group) in enumerate(recipe_mpr_clean.groupby('query')):
   entailment_probabilities.extend(probabilities)
   if i%10 == 0:
     print(f"Saving results up to query {i}")
-    with open("entailment_probabilities.json", "w") as f:
+    with open("aspect_entailment_probabilities.json", "w") as f:
       json.dump(entailment_probabilities, f)
 
-with open("entailment_probabilities.json", "w") as f:
+with open("aspect_entailment_probabilities.json", "w") as f:
   json.dump(entailment_probabilities, f)
