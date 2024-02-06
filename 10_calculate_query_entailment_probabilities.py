@@ -11,7 +11,7 @@ recipe_mpr_clean = (
     )
     .query("num_aspects > 1")
     .explode(['option_id', 'option_text'])
-    [['query', 'query_aspects', 'option_id', 'option_text']]
+    [['query', 'option_id', 'option_text']]
 )
 
 # See https://huggingface.co/facebook/bart-large-mnli
@@ -21,14 +21,15 @@ classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnl
 
 import json
 entailment_probabilities = []
+
 for i, (name, group) in enumerate(recipe_mpr_clean.groupby('query')):
-  query_aspects = group.query_aspects.iloc[0]
-  probabilities = classifier(list(group['option_text'].values), query_aspects, multi_label=True)
+  query = group['query'].iloc[0].replace(",", "")
+  probabilities = classifier(list(group['option_text'].values), query, multi_label=True)
   entailment_probabilities.extend(probabilities)
   if i%10 == 0:
     print(f"Saving results up to query {i}")
-    with open("aspect_entailment_probabilities.json", "w") as f:
+    with open("query_entailment_probabilities.json", "w") as f:
       json.dump(entailment_probabilities, f)
 
-with open("aspect_entailment_probabilities.json", "w") as f:
+with open("query_entailment_probabilities.json", "w") as f:
   json.dump(entailment_probabilities, f)
