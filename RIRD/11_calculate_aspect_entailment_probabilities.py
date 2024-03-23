@@ -25,5 +25,5 @@ print(f"Calculating entailment probabilities for {len(rird_reviews)} reviews and
 entailment_probabilities = classifier(list(rird_reviews['review_text']), aspects, multi_label = True)
 
 import json
-with open("query_entailment_probabilities.json", "w") as f:
+with open("aspect_entailment_probabilities.json", "w") as f:
   json.dump(entailment_probabilities, f)
